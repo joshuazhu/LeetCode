@@ -8,19 +8,26 @@ export class ListNode {
   }
 }
 
+//Recursive
 function isPalindrome(head: ListNode | null): boolean {
-    let frontendNode: ListNode | null = head
-    function recursiveCheck(currentNode): boolean {
-        if(!currentNode) return true
+    if(!head || !head.next ) return true
+    let firstNode: ListNode | null = head
 
-        if(!recursiveCheck(currentNode.next)) return false
+    function recursive(head: ListNode | null): boolean {
+        if(!head) return true
 
-        if(currentNode.val !== frontendNode!.val) return false
-        
-        frontendNode = frontendNode!.next
+        if(!recursive(head.next)) return false
+        if(firstNode!.val !== head.val) return false
+
+        firstNode = firstNode!.next
 
         return true
     }
 
-    return recursiveCheck(head)
+    return recursive(head)
 };
+
+//Iteration
+function isPalindrome(head: ListNode | null): boolean {
+
+}

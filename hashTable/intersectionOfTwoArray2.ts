@@ -11,12 +11,11 @@ function intersect(nums1: number[], nums2: number[]): number[] {
 
     nums2.forEach(v => {
         if(hashMap1.get(v)) {
-            //save the smallest occurrences
+            //save thae smallest occurrences
            if(hashMap2.get(v)) hashMap2.set(v, hashMap2.get(v)! + 1 < hashMap1.get(v)! ? hashMap2.get(v)! + 1: hashMap1.get(v)!)
            else hashMap2.set(v, 1)
         }
     })
-
 
     return nums2.filter(v => {
         if(hashMap2.get(v)) {
