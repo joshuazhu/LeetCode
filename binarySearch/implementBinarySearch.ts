@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/binary-search/
-function search(nums: number[], target: number): number {
+export function search(nums: number[], target: number): number {
     if(nums.length === 0) return -1
 
     if(nums.length === 1)  {
