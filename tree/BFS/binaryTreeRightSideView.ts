@@ -1,3 +1,5 @@
+//https://leetcode.com/problems/binary-tree-right-side-view/
+
 export class TreeNode {
   val: number
   left: TreeNode | null
@@ -9,28 +11,26 @@ export class TreeNode {
   }
 }
 
+function rightSideView(root: TreeNode | null): number[] {
 
-function minDepth(root: TreeNode | null): number {
-  if (!root) return 0
+  if (!root) return []
 
+  let result: number[] = []
   let queue: TreeNode[] = []
-  let minLevel = 0
   queue.push(root)
 
   while (queue.length > 0) {
-    const numberOfCurrentLevelNodes = queue.length
+    let numberOfCurrentLevelNodes = queue.length
 
     for (let i = 0; i < numberOfCurrentLevelNodes; i++) {
       const node = queue.shift()
 
-      if (node!.left !== null) queue.push(node!.left)
-      if (node!.right !== null) queue.push(node!.right)
-
-      if (!node!.left && !node!.right) return minLevel + 1
+      if (i === numberOfCurrentLevelNodes - 1) result.push(node!.val)
+      if (node!.left) queue.push(node!.left)
+      if (node!.right) queue.push(node!.right)
     }
-
-    minLevel++
   }
 
-  return minLevel
+  return result
+
 };

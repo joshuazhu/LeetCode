@@ -4,20 +4,20 @@
 //Recursive
 
 const nSumProblemRecursive = (nums: number[], sum: number) => {
-  if (sum === 0) return true;
+  if (sum === 0) return true
   if (nums.length === 1) return nums[0] === sum;
 
   if (nums[nums.length - 1] > sum) {
-    return nSumProblemRecursive(nums.slice(0, nums.length - 1), sum);
+    return nSumProblemRecursive(nums.slice(0, nums.length - 1), sum)
   }
 
   return (
-    nSumProblemRecursive(nums.slice(0, nums.length - 1), sum) ||
+    nSumProblemRecursive(nums.slice(0, nums.length - 1), sum - nums[nums.length - 1]) ||
     nSumProblemRecursive(
       nums.slice(0, nums.length - 1),
-      sum - nums[nums.length - 1]
+      sum
     )
-  );
+  )
 };
 
 const nSumProblemNonRecursive = (nums: number[], sum: number) => {
@@ -45,9 +45,9 @@ const nSumProblemNonRecursive = (nums: number[], sum: number) => {
   return subsets[nums.length - 1][sum];
 };
 
-console.log(nSumProblemNonRecursive([3, 34, 4, 12, 5, 2], 9))
-console.log(nSumProblemNonRecursive([3, 34, 4, 12, 5, 2], 10))
-console.log(nSumProblemNonRecursive([3, 34, 4, 12, 5, 2], 11))
-console.log(nSumProblemNonRecursive([3, 34, 4, 12, 5, 2], 12))
-console.log(nSumProblemNonRecursive([3, 34, 4, 12, 5, 2], 13))
-console.log(nSumProblemNonRecursive([3, 34, 4, 12, 5, 2], 30))
+console.log(nSumProblemRecursive([3, 34, 4, 12, 5, 2], 9))
+console.log(nSumProblemRecursive([3, 34, 4, 12, 5, 2], 10))
+console.log(nSumProblemRecursive([3, 34, 4, 12, 5, 2], 11))
+console.log(nSumProblemRecursive([3, 34, 4, 12, 5, 2], 12))
+console.log(nSumProblemRecursive([3, 34, 4, 12, 5, 2], 13))
+console.log(nSumProblemRecursive([3, 34, 4, 12, 5, 2], 30))

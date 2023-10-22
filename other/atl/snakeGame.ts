@@ -1,81 +1,78 @@
-//https://leetcode.com/problems/design-snake-game/
-
 class SnakeGame {
+
+  //1. board, initialised with 0
+  //2. snake, queue with [row, col]
+  //3. Set to store each of the snake element  <`row-col`, []>
+  //3. check snake move valid. If not valid, return -1
+  //   if valid, check if eat food, if not, add head and dequeue the body
+  //   if eat food add head and continue
+  board: number[][]
   snakeQueue: number[][]
+  snakeBodySet: Set<string>
   food: number[][]
-  currentHead: number[]
-  width: number
-  height: number
 
   constructor(width: number, height: number, food: number[][]) {
-    this.snakeQueue = [[0, 0]]
-    this.food = food
-    this.currentHead = [0, 0]
-    this.width = width
-    this.height = height
-  }
-
-  isValidHead(head: number[]): boolean {
-    console.log(this.currentHead)
-    console.log(this.snakeQueue)
-
-    //out of boundary
-    if (head[0] > this.height - 1 || head[0] < 0) return false
-    if (head[1] > this.width - 1 || head[1] < 0) return false
-
-    //check if head occupies the body
-
-    for (let i = 0; i < this.snakeQueue.length; i++) {
-      if (head[0] === this.snakeQueue[i][0] && head[1] === this.snakeQueue[i][1]) {
-        return false
+    this.board = Array.from(Array(height), () => new Array(width))
+    for (let i = 0; i < this.board.length; i++) {
+      for (let j = 0; j < this.board[0].length; j++) {
+        this.board[i][j] = 0
       }
     }
+
+    this.snakeQueue = [[0, 0]]
+    this.snakeBodySet = new Set<string>()
+    this.snakeBodySet.add(`0-0`)
+    this.food = food
+  }
+
+  isValidPosition(position: number[]): boolean {
+    if (position[0] < 0
+      || position[0] > this.board.length - 1
+      || position[1] < 0
+      || position[1] > this.board[0].length - 1
+    ) return false
+
+    if (this.snakeBodySet.has(`${position[0]}-${position[1]}`)) return false
 
     return true
   }
 
-  getNextFood(): number[] | null {
-    let currentFood = this.food[0]
+  updateSnakeBody(position: number[]) {
+    const currentFood = this.food[0]
 
-    if (!currentFood) {
-      return null
+    this.snakeQueue.push(position)
+    this.snakeBodySet.add(`${position[0]}-${position[1]}`)
+
+    if (this.snakeBodySet.has(`${currentFood[0]}-${currentFood[1]}`)) {
+      const toBeRemovedBody = this.snakeQueue.shift()
+      this.snakeBodySet.delete(`${toBeRemovedBody![0]}-${toBeRemovedBody![1]}`)
+    } else if (currentFood && currentFood[0] === position[0] && currentFood[1] === position[1]) {
+      this.food.shift()
+    } else {
+      const toBeRemovedBody = this.snakeQueue.shift()
+      this.snakeBodySet.delete(`${toBeRemovedBody![0]}-${toBeRemovedBody![1]}`)
     }
-
-    for (let i = 0; i < this.snakeQueue.length; i++) {
-      if (currentFood[0] === this.snakeQueue[i][0] && currentFood[1] === this.snakeQueue[i][1]) {
-        return null
-      }
-    }
-
-    return currentFood
   }
 
   move(direction: string): number {
-    let directions: {
-      [key: string]: number[]
+    const moves: {
+      [key: string]: [number, number]
     } = {
-      "L": [0, -1],
-      "R": [0, 1],
       "U": [-1, 0],
-      "D": [1, 0]
-    }
-    this.currentHead[0] += directions[direction][0]
-    this.currentHead[1] += directions[direction][1]
-
-    let nextFood = this.getNextFood()
-
-    //if not eat a food
-    if (!nextFood || this.currentHead[0] !== nextFood[0] || this.currentHead[1] !== nextFood[1]) {
-      this.snakeQueue.shift()
-    } else {
-      this.food.shift()
+      "D": [1, 0],
+      "L": [0, -1],
+      "R": [0, 1]
     }
 
-    if (this.isValidHead(this.currentHead)) {
-      this.snakeQueue.push(this.currentHead.slice())
-      return this.snakeQueue.length - 1
-    } else {
+    const snakeHead = this.snakeQueue[this.snakeQueue.length - 1]
+    const newPostion = [snakeHead[0] + moves[direction][0], snakeHead[1] + moves[direction][1]]
+
+    if (!this.isValidPosition(newPostion)) {
       return -1
     }
+
+    this.updateSnakeBody(newPostion)
+
+    return this.snakeQueue.length - 1
   }
 }

@@ -17,4 +17,6 @@
     for(; slowIndex < nums.length; slowIndex++) {
         nums[slowIndex] = 0
     }
+
+    "".subs
 };

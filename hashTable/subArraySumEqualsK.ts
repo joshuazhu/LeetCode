@@ -1,3 +1,5 @@
+//https://leetcode.com/problems/subarray-sum-equals-k/
+
 function subarraySum(nums: number[], k: number): number {
   let map: Map<number, number> = new Map<number, number>()
   let currentSum = 0

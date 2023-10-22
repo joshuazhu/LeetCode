@@ -1,3 +1,5 @@
+//https://leetcode.com/problems/minimum-depth-of-binary-tree/
+
 export class TreeNode {
   val: number
   left: TreeNode | null
@@ -9,26 +11,28 @@ export class TreeNode {
   }
 }
 
-function maxDepth(root: TreeNode | null): number {
 
+function minDepth(root: TreeNode | null): number {
   if (!root) return 0
 
   let queue: TreeNode[] = []
-  let depth = 0
+  let minLevel = 0
   queue.push(root)
 
   while (queue.length > 0) {
-    let numberOfCurrentLevelNodes = queue.length
+    const numberOfCurrentLevelNodes = queue.length
 
     for (let i = 0; i < numberOfCurrentLevelNodes; i++) {
-      let node = queue.shift()
+      const node = queue.shift()
 
-      if (node!.left) queue.push(node!.left)
-      if (node!.right) queue.push(node!.right)
+      if (node!.left !== null) queue.push(node!.left)
+      if (node!.right !== null) queue.push(node!.right)
+
+      if (!node!.left && !node!.right) return minLevel + 1
     }
 
-    depth++
+    minLevel++
   }
 
-  return depth
+  return minLevel
 };

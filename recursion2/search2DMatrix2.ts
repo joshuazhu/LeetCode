@@ -11,7 +11,6 @@ function searchMatrix(matrix: number[][], target: number): boolean {
         let row = up
         
         while(row <= down && matrix[row][mid] <= target) {
-            console.log(row, mid)
             if(matrix[row][mid] === target) {
                 return true
             }

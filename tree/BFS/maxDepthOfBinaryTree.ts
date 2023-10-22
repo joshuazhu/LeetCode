@@ -1,3 +1,5 @@
+//https://leetcode.com/problems/maximum-depth-of-binary-tree/
+
 export class TreeNode {
   val: number
   left: TreeNode | null
@@ -9,26 +11,26 @@ export class TreeNode {
   }
 }
 
-function rightSideView(root: TreeNode | null): number[] {
+function maxDepth(root: TreeNode | null): number {
 
-  if (!root) return []
+  if (!root) return 0
 
-  let result: number[] = []
   let queue: TreeNode[] = []
+  let depth = 0
   queue.push(root)
 
   while (queue.length > 0) {
     let numberOfCurrentLevelNodes = queue.length
 
     for (let i = 0; i < numberOfCurrentLevelNodes; i++) {
-      const node = queue.shift()
+      let node = queue.shift()
 
-      if (i === numberOfCurrentLevelNodes - 1) result.push(node!.val)
       if (node!.left) queue.push(node!.left)
       if (node!.right) queue.push(node!.right)
     }
+
+    depth++
   }
 
-  return result
-
+  return depth
 };
